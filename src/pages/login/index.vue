@@ -18,14 +18,14 @@
       <a-form-item name="user">
         <a-input
           v-model:value="formState.user"
-          placeholder="用户名：admin"
+          placeholder="用户名："
           class="user"
         />
       </a-form-item>
       <a-form-item name="password">
         <a-input-password
           v-model:value="formState.password"
-          placeholder="密码：123456"
+          placeholder="密码："
           class="password"
         />
       </a-form-item>

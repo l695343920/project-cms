@@ -72,6 +72,8 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
+    const selectedKeys = ref<string[]>(["2"]);
+    const openKeys = ref<string[]>(["sub2"]);
     const handleClick = (e: any) => {
       if (e.key === "1") {
         router.push("/work");
@@ -84,8 +86,8 @@ export default defineComponent({
       }
     };
     return {
-      selectedKeys: ref<string[]>(["2"]),
-      openKeys: ref<string[]>(["sub2"]),
+      selectedKeys,
+      openKeys,
       handleClick,
     };
   },

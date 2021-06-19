@@ -1,7 +1,7 @@
 <!--
  * @Descripttion: 图书管理列表
  * @Date: 2021-05-03 10:32:30
- * @LastEditTime: 2021-06-05 22:03:15
+ * @LastEditTime: 2021-06-16 22:33:42
 -->
 <template>
   <div>
@@ -117,26 +117,6 @@ const formState = [
   },
 ];
 
-//baseform 配置
-let formConfigInit = [
-  {
-    type: "text",
-    name: "name",
-    initialValue: "",
-    placeholder: "请填写名称",
-    label: "名称",
-    maxLength: 15,
-  },
-  {
-    type: "textarea",
-    name: "content",
-    initialValue: "",
-    placeholder: "请填写描述",
-    label: "描述",
-    maxLength: 100,
-  },
-];
-
 //baseform 验证规则
 const rules = {
   name: [
@@ -178,7 +158,24 @@ export default defineComponent({
       }
     };
 
-    let formConfig = reactive<formConfigState[]>(formConfigInit);
+    let formConfig = reactive<formConfigState[]>([
+      {
+        type: "text",
+        name: "name",
+        initialValue: "",
+        placeholder: "请填写名称",
+        label: "名称",
+        maxLength: 15,
+      },
+      {
+        type: "textarea",
+        name: "content",
+        initialValue: "",
+        placeholder: "请填写描述",
+        label: "描述",
+        maxLength: 100,
+      },
+    ]);
     //baseform 表单footer
     const footer = [
       {

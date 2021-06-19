@@ -21,6 +21,9 @@
       <template #overlay>
         <a-menu @click="handleMenuClick">
           <a-menu-item>
+            <a href="javascript:;">修改资料</a>
+          </a-menu-item>
+          <a-menu-item>
             <a href="javascript:;">退出</a>
           </a-menu-item>
         </a-menu>
@@ -70,7 +73,7 @@ export default defineComponent({
     };
     //头像下拉菜单
     const handleMenuClick = (e: any) => {
-      if (e.item.index === 0) {
+      if (e.item.index === 1) {
         router.push("/login");
       }
     };

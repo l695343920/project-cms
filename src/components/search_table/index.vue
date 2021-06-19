@@ -1,7 +1,7 @@
 <!--
  * @Descripttion: 搜索功能表格封装
  * @Date: 2021-05-18 20:14:05
- * @LastEditTime: 2021-05-27 08:38:24
+ * @LastEditTime: 2021-06-19 11:33:18
 -->
 <template>
   <a-form
@@ -18,10 +18,16 @@
       :name="item.name"
     >
       <a-input
+        v-if="item.type === 'text'"
         v-model:value="formData[item.name]"
         :placeholder="item.placeholder"
       >
       </a-input>
+      <a-date-picker
+        v-else-if="item.type === 'date-picker'"
+        v-model:value="formData[item.name]"
+        :placeholder="item.placeholder"
+      />
     </a-form-item>
     <a-form-item>
       <a-button type="primary" html-type="submit"> 查询 </a-button>
@@ -45,7 +51,6 @@
     :loading="loading"
     :pagination="pagination"
     @change="handleTableChange"
-    :scroll="{ x: 'calc(110%)' }"
   >
     <template
       v-for="(item, index) in columnsArr"
