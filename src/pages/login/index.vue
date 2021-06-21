@@ -115,7 +115,7 @@ export default defineComponent({
   },
 });
 </script>
-<style>
+<style lang="less">
 .sky {
   height: 100vh;
   background: #007fd5;

@@ -7,15 +7,8 @@
     <sider :collapsed="collapsed"></sider>
     <a-layout>
       <headers :collapsed="collapsed" @triggerChange="triggerChange"></headers>
-      <a-layout-content
-        :style="{
-          margin: '24px 16px',
-          padding: '24px',
-          background: '#fff',
-        }"
-      >
-        <router-view></router-view>
-      </a-layout-content>
+      <content></content>
+      <drawer></drawer>
     </a-layout>
   </a-layout>
 </template>
@@ -23,12 +16,16 @@
 import { defineComponent, ref, reactive } from "vue";
 import Sider from "./sider.vue";
 import Headers from "./headers.vue";
+import Content from "./content.vue";
+import Drawer from "./drawer.vue";
 
 export default defineComponent({
   name: "Layout",
   components: {
     Sider,
     Headers,
+    Content,
+    Drawer,
   },
   setup() {
     let initCollapsed: boolean = false;
@@ -54,8 +51,4 @@ export default defineComponent({
   },
 });
 </script>
-<style>
-.site-layout .site-layout-background {
-  background: #fff;
-}
-</style>
+<style lang="less"></style>

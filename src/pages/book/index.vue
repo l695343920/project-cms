@@ -1,7 +1,7 @@
 <!--
  * @Descripttion: 图书管理列表
  * @Date: 2021-05-03 10:32:30
- * @LastEditTime: 2021-06-16 22:33:42
+ * @LastEditTime: 2021-06-20 10:29:24
 -->
 <template>
   <div>
@@ -281,4 +281,4 @@ export default defineComponent({
 });
 </script>
 
-<style scoped></style>
+<style lang="less"></style>

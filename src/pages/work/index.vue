@@ -3,127 +3,145 @@
  * @Date: 2021-05-26 20:39:46
 -->
 <template>
-  <div id="main"></div>
+  <a-row :gutter="[16, 16]">
+    <a-col :span="6" v-for="(item, index) in cardData">
+      <a-card class="id_card" :style="{ background: item.bg }">
+        <a-row type="flex" justify="space-between">
+          {{ item.title }}
+          <component :is="$antIcons[item.icons]"></component
+        ></a-row>
+        <a-row type="flex" align="bottom">
+          <span class="value">{{ item.value }}</span>
+          <span>{{ item.unit }}</span>
+        </a-row>
+      </a-card>
+    </a-col>
+  </a-row>
+  <a-row></a-row>
+  <a-row :gutter="[16, 16]">
+    <a-col :span="12">
+      <div id="main"></div>
+    </a-col>
+    <a-col :span="12">
+      <div id="sub"></div>
+    </a-col>
+  </a-row>
+  <a-row>
+    <a-col :span="8"> <div id="small"></div></a-col>
+    <a-col :span="8"> <div id="small1"></div> </a-col>
+    <a-col :span="8"> <div id="small2"></div></a-col>
+  </a-row>
 </template>
 
 <script lang="ts">
 import { defineComponent, reactive, ref, onMounted } from "vue";
 import * as echarts from "echarts";
+import { option, option1, option2, option3, option4 } from "./config";
 
 export default defineComponent({
   name: "Work",
   setup(props, ctx) {
     onMounted(() => {
-      var chartDom = document.getElementById("main");
-      var myChart = echarts.init(chartDom);
-      var option;
-
-      option = {
-        title: {
-          text: "堆叠区域图",
-        },
-        tooltip: {
-          trigger: "axis",
-          axisPointer: {
-            type: "cross",
-            label: {
-              backgroundColor: "#6a7985",
-            },
-          },
-        },
-        legend: {
-          data: ["邮件营销", "联盟广告", "视频广告", "直接访问", "搜索引擎"],
-        },
-        toolbox: {
-          feature: {
-            saveAsImage: {},
-          },
-        },
-        grid: {
-          left: "3%",
-          right: "4%",
-          bottom: "3%",
-          containLabel: true,
-        },
-        xAxis: [
-          {
-            type: "category",
-            boundaryGap: false,
-            data: ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
-          },
-        ],
-        yAxis: [
-          {
-            type: "value",
-          },
-        ],
-        series: [
-          {
-            name: "邮件营销",
-            type: "line",
-            stack: "总量",
-            areaStyle: {},
-            emphasis: {
-              focus: "series",
-            },
-            data: [120, 132, 101, 134, 90, 230, 210],
-          },
-          {
-            name: "联盟广告",
-            type: "line",
-            stack: "总量",
-            areaStyle: {},
-            emphasis: {
-              focus: "series",
-            },
-            data: [220, 182, 191, 234, 290, 330, 310],
-          },
-          {
-            name: "视频广告",
-            type: "line",
-            stack: "总量",
-            areaStyle: {},
-            emphasis: {
-              focus: "series",
-            },
-            data: [150, 232, 201, 154, 190, 330, 410],
-          },
-          {
-            name: "直接访问",
-            type: "line",
-            stack: "总量",
-            areaStyle: {},
-            emphasis: {
-              focus: "series",
-            },
-            data: [320, 332, 301, 334, 390, 330, 320],
-          },
-          {
-            name: "搜索引擎",
-            type: "line",
-            stack: "总量",
-            label: {
-              show: true,
-              position: "top",
-            },
-            areaStyle: {},
-            emphasis: {
-              focus: "series",
-            },
-            data: [820, 932, 901, 934, 1290, 1330, 1320],
-          },
-        ],
-      };
-
-      option && myChart.setOption(option);
+      initMian();
+      initSub();
+      initSmall();
+      initSmall1();
+      initSmall2();
     });
+
+    const initMian = () => {
+      let chartDom = document.getElementById("main");
+      if (!chartDom) return false;
+      let myChart = echarts.init(chartDom);
+      option && myChart.setOption(option);
+    };
+
+    const initSub = () => {
+      let chartDom = document.getElementById("sub");
+      if (!chartDom) return false;
+      let myChart = echarts.init(chartDom);
+      option && myChart.setOption(option1);
+    };
+
+    const initSmall = () => {
+      let chartDom = document.getElementById("small");
+      if (!chartDom) return false;
+      let myChart = echarts.init(chartDom);
+      option && myChart.setOption(option2);
+    };
+
+    const initSmall1 = () => {
+      let chartDom = document.getElementById("small1");
+      if (!chartDom) return false;
+      let myChart = echarts.init(chartDom);
+      option && myChart.setOption(option3);
+    };
+
+    const initSmall2 = () => {
+      let chartDom = document.getElementById("small2");
+      if (!chartDom) return false;
+      let myChart = echarts.init(chartDom);
+      option && myChart.setOption(option4);
+    };
+
+    return {
+      cardData: [
+        {
+          title: "客户",
+          icons: "TeamOutlined",
+          value: "100000000",
+          unit: "位",
+          bg: "linear-gradient(#ca6230, #fb9e38)",
+        },
+        {
+          title: "合同",
+          icons: "FileDoneOutlined",
+          value: "100000000",
+          unit: "份",
+          bg: "linear-gradient(#cf3843, #ec4850)",
+        },
+        {
+          title: "订单",
+          icons: "ProfileOutlined",
+          value: "50000",
+          unit: "单",
+          bg: "linear-gradient(#1c69c5, #158ab4)",
+        },
+        {
+          title: "商品",
+          icons: "ShoppingOutlined",
+          value: "50000",
+          unit: "件",
+          bg: "linear-gradient(#4740c8, #7e5de7)",
+        },
+      ],
+    };
   },
 });
 </script>
 
-<style>
-#main {
-  width: 1077px;
-  height: 388px;
+<style lang="less">
+.id_card {
+  width: 100%;
+  color: #fdeff0;
+  font-weight: bold;
+  border-radius: 4px;
+  .anticon {
+    font-size: 18px;
+  }
+  .value {
+    font-size: 24px;
+    margin-right: 10px;
+  }
+}
+
+#main,
+#sub,
+#small,
+#small1,
+#small2 {
+  width: 90%;
+  height: 300px;
+  margin-top: 20px;
 }
 </style>
