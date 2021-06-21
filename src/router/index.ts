@@ -45,6 +45,13 @@ const router = createRouter({
 
 router.beforeEach((to, from, next) => {
   NProgress.start();
+  // to表示将要访问的路径
+  // form表示从那个页面跳转而来
+  // next表示允许跳转到指定位置
+  if (to.path === "/login") return next();
+  // 获取用户本地的token, 如果token不存在则跳转到登录页
+  const tokenStr = localStorage.getItem("token");
+  if (!tokenStr) return next("/login");
   next();
 });
 

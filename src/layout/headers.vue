@@ -75,6 +75,8 @@ export default defineComponent({
     const handleMenuClick = (e: any) => {
       if (e.item.index === 1) {
         router.push("/login");
+        localStorage.removeItem("userInfo");
+        localStorage.removeItem("token");
       }
     };
     return {
@@ -85,9 +87,9 @@ export default defineComponent({
   },
 });
 </script>
-<style>
+<style lang="less">
 .header {
-  background: #fff;
+  background: var(--theme-bg-color);
   padding: 0;
   position: relative;
 }
