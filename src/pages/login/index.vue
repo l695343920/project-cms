@@ -92,7 +92,7 @@ export default defineComponent({
             localStorage.setItem("token", res.data.token);
             //设置用户信息
             localStorage.setItem("userInfo", JSON.stringify(res.data));
-            router.push("/book");
+            router.push("/work");
           }
         })
         .catch((error: ValidateErrorEntity<FormState>) => {

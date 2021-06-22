@@ -4,11 +4,11 @@
 -->
 <template>
   <a-row :gutter="[16, 16]">
-    <a-col :span="6" v-for="(item, index) in cardData">
+    <a-col :xs="24" :lg="6" v-for="(item, index) in cardData">
       <a-card class="id_card" :style="{ background: item.bg }">
         <a-row type="flex" justify="space-between">
           {{ item.title }}
-          <component :is="$antIcons[item.icons]"></component
+          <component :is="antIcons[item.icons]"></component
         ></a-row>
         <a-row type="flex" align="bottom">
           <span class="value">{{ item.value }}</span>
@@ -19,22 +19,28 @@
   </a-row>
   <a-row></a-row>
   <a-row :gutter="[16, 16]">
-    <a-col :span="12">
+    <a-col :xs="24" :lg="12">
       <div id="main"></div>
     </a-col>
-    <a-col :span="12">
+    <a-col :xs="24" :lg="12">
       <div id="sub"></div>
     </a-col>
   </a-row>
   <a-row>
-    <a-col :span="8"> <div id="small"></div></a-col>
-    <a-col :span="8"> <div id="small1"></div> </a-col>
-    <a-col :span="8"> <div id="small2"></div></a-col>
+    <a-col :xs="24" :lg="8"> <div id="small"></div></a-col>
+    <a-col :xs="24" :lg="8"> <div id="small1"></div> </a-col>
+    <a-col :xs="24" :lg="8"> <div id="small2"></div></a-col>
   </a-row>
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, ref, onMounted } from "vue";
+import {
+  defineComponent,
+  reactive,
+  ref,
+  onMounted,
+  getCurrentInstance,
+} from "vue";
 import * as echarts from "echarts";
 import { option, option1, option2, option3, option4 } from "./config";
 
@@ -83,8 +89,11 @@ export default defineComponent({
       let myChart = echarts.init(chartDom);
       option && myChart.setOption(option4);
     };
-
+    const currentInstance: any = getCurrentInstance();
+    const antIcons =
+      currentInstance.appContext.config.globalProperties.$antIcons;
     return {
+      antIcons,
       cardData: [
         {
           title: "客户",

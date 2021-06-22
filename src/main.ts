@@ -1,7 +1,7 @@
 /*
  * @Descripttion: main
  * @Date: 2021-05-03 10:15:41
- * @LastEditTime: 2021-06-21 23:00:55
+ * @LastEditTime: 2021-06-21 23:41:44
  */
 import { createApp } from "vue";
 import App from "./App.vue";
@@ -22,7 +22,7 @@ app.use(ant).use(router);
 app.mount("#app");
 // 注册组件
 Object.keys(antIcons).forEach((key) => {
-  app.component(key, antIcons[key]);
+  app.component(key, antIcons[key as keyof typeof antIcons]);
 });
 // 添加到全局
 app.config.globalProperties.$antIcons = antIcons;
