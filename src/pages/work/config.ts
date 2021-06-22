@@ -125,7 +125,7 @@ export const option2 = {
 
 export const option3 = {
   title: {
-    text: "某站点用户访问来源",
+    text: "",
     subtext: "纯属虚构",
     left: "center",
   },
@@ -161,7 +161,7 @@ export const option3 = {
 
 export const option4 = {
   title: {
-    text: "世界人口总量",
+    text: "",
     subtext: "数据来自网络",
   },
   tooltip: {

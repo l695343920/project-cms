@@ -8,7 +8,14 @@
     <a-layout>
       <headers :collapsed="collapsed" @triggerChange="triggerChange"></headers>
       <content></content>
-      <drawer></drawer>
+      <a-drawer
+        v-if="isPhone"
+        placement="right"
+        :closable="false"
+        v-model:visible="visible"
+        ><drawer></drawer
+      ></a-drawer>
+      <drawer v-else></drawer>
     </a-layout>
   </a-layout>
 </template>
@@ -41,12 +48,12 @@ export default defineComponent({
     const collapsed = ref<boolean>(initCollapsed);
     //左边菜单收缩功能
     const triggerChange = () => {
-      if (isPhone) return;
       collapsed.value = !collapsed.value;
     };
     return {
       triggerChange,
       collapsed,
+      isPhone,
     };
   },
 });

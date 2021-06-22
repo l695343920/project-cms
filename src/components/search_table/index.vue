@@ -1,7 +1,7 @@
 <!--
  * @Descripttion: 搜索功能表格封装
  * @Date: 2021-05-18 20:14:05
- * @LastEditTime: 2021-06-19 11:33:18
+ * @LastEditTime: 2021-06-23 01:10:29
 -->
 <template>
   <a-form
@@ -51,6 +51,7 @@
     :loading="loading"
     :pagination="pagination"
     @change="handleTableChange"
+    :scroll="{ x: isPhone ? 'max-content' : '' }"
   >
     <template
       v-for="(item, index) in columnsArr"
@@ -207,6 +208,10 @@ export default defineComponent({
       featchList,
       params,
       columnsArr,
+      //是否是移动端
+      isPhone: /Android|webOS|iPhone|iPod|BlackBerry/i.test(
+        navigator.userAgent
+      ),
     };
   },
 });

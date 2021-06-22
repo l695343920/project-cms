@@ -1,7 +1,7 @@
 <!--
  * @Descripttion: 图书管理列表
  * @Date: 2021-05-03 10:32:30
- * @LastEditTime: 2021-06-20 10:29:24
+ * @LastEditTime: 2021-06-23 00:52:52
 -->
 <template>
   <div>
@@ -80,7 +80,7 @@ const columns = [
     title: "描述",
     dataIndex: "content",
     key: "content",
-    width: "40%",
+    width: "50%",
     ellipsis: true,
     slots: { customRender: "content" },
   },
@@ -88,15 +88,12 @@ const columns = [
     title: "创建时间",
     dataIndex: "date",
     key: "date",
-    width: "20%",
-    ellipsis: true,
     slots: { customRender: "date" },
   },
   {
     title: "操作",
     dataIndex: "action",
     key: "action",
-    width: "20%",
     slots: { customRender: "action" },
   },
 ];

@@ -60,6 +60,10 @@ export default defineComponent({
       if (!chartDom) return false;
       let myChart = echarts.init(chartDom);
       option && myChart.setOption(option);
+      myChart.resize();
+      window.addEventListener("resize", function () {
+        myChart.resize();
+      });
     };
 
     const initSub = () => {
@@ -67,6 +71,10 @@ export default defineComponent({
       if (!chartDom) return false;
       let myChart = echarts.init(chartDom);
       option && myChart.setOption(option1);
+      myChart.resize();
+      window.addEventListener("resize", function () {
+        myChart.resize();
+      });
     };
 
     const initSmall = () => {
@@ -74,6 +82,10 @@ export default defineComponent({
       if (!chartDom) return false;
       let myChart = echarts.init(chartDom);
       option && myChart.setOption(option2);
+      myChart.resize();
+      window.addEventListener("resize", function () {
+        myChart.resize();
+      });
     };
 
     const initSmall1 = () => {
@@ -81,6 +93,10 @@ export default defineComponent({
       if (!chartDom) return false;
       let myChart = echarts.init(chartDom);
       option && myChart.setOption(option3);
+      myChart.resize();
+      window.addEventListener("resize", function () {
+        myChart.resize();
+      });
     };
 
     const initSmall2 = () => {
@@ -88,8 +104,12 @@ export default defineComponent({
       if (!chartDom) return false;
       let myChart = echarts.init(chartDom);
       option && myChart.setOption(option4);
+      window.addEventListener("resize", function () {
+        myChart.resize();
+      });
     };
     const currentInstance: any = getCurrentInstance();
+    console.log(getCurrentInstance(), 1111111111111);
     const antIcons =
       currentInstance.appContext.config.globalProperties.$antIcons;
     return {
@@ -149,7 +169,7 @@ export default defineComponent({
 #small,
 #small1,
 #small2 {
-  width: 90%;
+  width: 94%;
   height: 300px;
   margin-top: 20px;
 }

@@ -37,8 +37,8 @@
     width="600px"
   >
     <BaseForm
-      :label="{ span: 4 }"
-      :wrapperCol="{ span: 18 }"
+      :label="{ span: 5 }"
+      :wrapperCol="{ span: 17 }"
       :rules="rules"
       :formState="formConfig"
       :footer="footer"
@@ -86,7 +86,7 @@ const columns = [
     key: "create_time",
     width: "25%",
     ellipsis: true,
-    // slots: { customRender: "create_time" },
+    slots: { customRender: "create_time" },
   },
   {
     title: "操作",

@@ -38,7 +38,7 @@ export default defineComponent({
   setup(props, context) {
     const currentInstance: any = getCurrentInstance();
     const visible = ref<boolean>(false);
-
+    console.log(getCurrentInstance(), 222222);
     const afterVisibleChange = (bool: boolean) => {
       console.log("visible", bool);
     };
