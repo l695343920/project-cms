@@ -4,18 +4,21 @@
 -->
 <template>
   <a-layout id="components-layout-demo-custom-trigger">
-    <sider :collapsed="collapsed"></sider>
+    <a-drawer
+      placement="left"
+      :closable="false"
+      v-model:visible="visible"
+      v-if="isPhone"
+      width="200"
+      :bodyStyle="{ padding: 0 }"
+    >
+      <sider :collapsed="collapsed"></sider
+    ></a-drawer>
+    <sider :collapsed="collapsed" v-else></sider>
     <a-layout>
       <headers :collapsed="collapsed" @triggerChange="triggerChange"></headers>
       <content></content>
-      <a-drawer
-        v-if="isPhone"
-        placement="right"
-        :closable="false"
-        v-model:visible="visible"
-        ><drawer></drawer
-      ></a-drawer>
-      <drawer v-else></drawer>
+      <drawer></drawer>
     </a-layout>
   </a-layout>
 </template>
@@ -35,25 +38,28 @@ export default defineComponent({
     Drawer,
   },
   setup() {
-    let initCollapsed: boolean = false;
+    //侧边栏菜单
+    const visible = ref<boolean>(false);
     //是否是移动端
-    let isPhone: boolean = /Android|webOS|iPhone|iPod|BlackBerry/i.test(
+    let isPhone = /Android|webOS|iPhone|iPod|BlackBerry/i.test(
       navigator.userAgent
     );
-    if (isPhone) {
-      //手机端
-      initCollapsed = true;
-    }
     //是否收缩菜单
-    const collapsed = ref<boolean>(initCollapsed);
+    const collapsed = ref<boolean>(isPhone);
     //左边菜单收缩功能
     const triggerChange = () => {
-      collapsed.value = !collapsed.value;
+      if (isPhone) {
+        visible.value = true;
+        collapsed.value = false;
+      } else {
+        collapsed.value = !collapsed.value;
+      }
     };
     return {
       triggerChange,
       collapsed,
       isPhone,
+      visible,
     };
   },
 });

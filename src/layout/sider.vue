@@ -3,7 +3,12 @@
  * @Date: 2021-05-30 13:44:24
 -->
 <template>
-  <a-layout-sider v-model:collapsed="collapsed" :trigger="null" collapsible>
+  <a-layout-sider
+    v-model:collapsed="collapsed"
+    :trigger="null"
+    collapsible
+    :width="width"
+  >
     <div class="logo"></div>
     <a-menu
       theme="dark"
@@ -61,6 +66,11 @@ export default defineComponent({
       type: Boolean,
       default: false,
     },
+    //宽度
+    width: {
+      type: String,
+      default: "200px",
+    },
   },
   name: "Sider",
   components: {
@@ -94,11 +104,11 @@ export default defineComponent({
 });
 </script>
 <style>
-#components-layout-demo-custom-trigger .ant-layout-sider {
+.ant-layout-sider {
   min-height: 100vh;
 }
 
-#components-layout-demo-custom-trigger .trigger {
+.trigger {
   font-size: 18px;
   line-height: 64px;
   padding: 0 24px;
@@ -106,11 +116,11 @@ export default defineComponent({
   transition: color 0.3s;
 }
 
-#components-layout-demo-custom-trigger .trigger:hover {
+.trigger:hover {
   color: #1890ff;
 }
 
-#components-layout-demo-custom-trigger .logo {
+.logo {
   height: 32px;
   background: rgba(255, 255, 255, 0.3);
   margin: 16px;
