@@ -1,14 +1,13 @@
 /*
  * @Descripttion: main
  * @Date: 2021-05-03 10:15:41
- * @LastEditTime: 2021-06-21 23:41:44
+ * @LastEditTime: 2021-06-24 08:18:20
  */
 import { createApp } from "vue";
 import App from "./App.vue";
 import router from "@/router";
 import ant from "ant-design-vue";
-import "ant-design-vue/dist/antd.css";
-import "@/utils/normalize.css";
+import "ant-design-vue/dist/antd.less";
 import * as antIcons from "@ant-design/icons-vue";
 
 //改变主题色

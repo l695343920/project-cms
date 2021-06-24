@@ -16,12 +16,12 @@
   >
     <p>主题色</p>
     <div>
-      <a-tag class="tag" @click="() => tagChange('#fff')">白色</a-tag>
-      <a-tag class="tag" color="blue" @click="() => tagChange('blue')"
-        >蓝色</a-tag
-      >
-      <a-tag class="tag" color="yellow" @click="() => tagChange('yellow')"
-        >黄色</a-tag
+      <a-tag
+        v-for="(item, index) in tagData"
+        class="tag"
+        @click="() => tagChange(item.value)"
+        :color="item.value"
+        >{{ item.name }}</a-tag
       >
     </div>
   </a-drawer>
@@ -30,6 +30,7 @@
 <script lang="ts">
 import { defineComponent, ref, getCurrentInstance } from "vue";
 import { SettingOutlined } from "@ant-design/icons-vue";
+import { replaceStyleVariables } from "vite-plugin-theme/es/client";
 export default defineComponent({
   name: "Drawer",
   components: {
@@ -38,9 +39,8 @@ export default defineComponent({
   setup(props, context) {
     const currentInstance: any = getCurrentInstance();
     const visible = ref<boolean>(false);
-    console.log(getCurrentInstance(), 222222);
     const afterVisibleChange = (bool: boolean) => {
-      console.log("visible", bool);
+      // console.log("visible", bool);
     };
 
     //抽屉显示
@@ -49,10 +49,25 @@ export default defineComponent({
     };
 
     //改变主题色
-    const tagChange = (color: string) => {
-      currentInstance.appContext.config.globalProperties.$initThemeBgColor(
-        color
-      );
+    const tagChange = async (color: string) => {
+      await replaceStyleVariables({
+        colorVariables: [color],
+      });
+      // currentInstance.appContext.config.globalProperties.$initThemeBgColor(
+      //   color
+      // );
+      // (window as any).less
+      //   .modifyVars({
+      //     "@primary-color": color,
+      //     "@link-color": color,
+      //     "@btn-primary-bg": color,
+      //   })
+      //   .then(() => {
+      //     console.log(1);
+      //   })
+      //   .catch((err: any) => {
+      //     console.log(2, err);
+      //   });
     };
 
     return {
@@ -60,6 +75,16 @@ export default defineComponent({
       afterVisibleChange,
       showDrawer,
       tagChange,
+      tagData: [
+        { name: "黑色", value: "black" },
+        { name: "蓝色", value: "blue" },
+        { name: "绿色", value: "green" },
+        { name: "紫色", value: "purple" },
+        { name: "黄色", value: "yellow" },
+        { name: "红色", value: "red" },
+        { name: "粉红色", value: "pink" },
+        { name: "橙黄色", value: "orange" },
+      ],
     };
   },
 });
@@ -74,5 +99,6 @@ export default defineComponent({
 }
 .tag {
   cursor: pointer;
+  margin-bottom: 10px;
 }
 </style>

@@ -1,21 +1,42 @@
 /*
  * @Descripttion:
  * @Date: 2021-05-03 10:15:41
- * @LastEditTime: 2021-06-17 23:26:39
+ * @LastEditTime: 2021-06-24 11:10:50
  */
-import { defineConfig } from "vite";
+import { defineConfig, Plugin } from "vite";
 import vue from "@vitejs/plugin-vue";
 import { resolve } from "path";
-
+import {
+  viteThemePlugin,
+  mixLighten,
+  mixDarken,
+  tinycolor,
+} from "vite-plugin-theme";
 // https://vitejs.dev/config/
 export default defineConfig({
+  css: {
+    preprocessorOptions: {
+      less: {
+        modifyVars: {
+          "primary-color": "#1890ff",
+        },
+        javascriptEnabled: true,
+      },
+    },
+  },
   resolve: {
     extensions: [".js", ".vue", ".json", ".ts"],
     alias: {
       "@": resolve(__dirname, "src"),
     },
   }, //设置加载顺序
-  plugins: [vue()],
+  plugins: [
+    vue(),
+    viteThemePlugin({
+      // Match the color to be modified
+      colorVariables: ["#1890ff"],
+    }),
+  ],
   server: {
     // 服务器主机名，如果允许外部访问，可设置为"0.0.0.0"
     host: "0.0.0.0",

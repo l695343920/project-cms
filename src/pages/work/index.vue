@@ -109,7 +109,7 @@ export default defineComponent({
       });
     };
     const currentInstance: any = getCurrentInstance();
-    console.log(getCurrentInstance(), 1111111111111);
+
     const antIcons =
       currentInstance.appContext.config.globalProperties.$antIcons;
     return {
