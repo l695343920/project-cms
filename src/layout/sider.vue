@@ -8,10 +8,11 @@
     :trigger="null"
     collapsible
     :width="width"
+    :theme="theme"
   >
     <div class="logo"></div>
     <a-menu
-      theme="dark"
+      :theme="theme"
       mode="inline"
       v-model:openKeys="openKeys"
       v-model:selectedKeys="selectedKeys"
@@ -56,8 +57,9 @@ import {
   UserOutlined,
   HomeOutlined,
 } from "@ant-design/icons-vue";
-import { defineComponent, ref, reactive } from "vue";
+import { defineComponent, ref, reactive, computed } from "vue";
 import { useRouter } from "vue-router";
+import { useStore } from "vuex";
 
 export default defineComponent({
   props: {
@@ -84,21 +86,26 @@ export default defineComponent({
     const router = useRouter();
     const selectedKeys = ref<string[]>(["1"]);
     const openKeys = ref<string[]>([]);
+
+    const store = useStore();
+    const theme: string = computed(() => store.state.layout.theme); // 这里注意指定模块
+
     const handleClick = (e: any) => {
       if (e.key === "1") {
         router.push("/work");
       }
       if (e.key === "2") {
-        router.push("/book");
+        router.push("/book/list");
       }
       if (e.key === "3") {
-        router.push("/sys");
+        router.push("/sys/list");
       }
     };
     return {
       selectedKeys,
       openKeys,
       handleClick,
+      theme,
     };
   },
 });

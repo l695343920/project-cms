@@ -46,8 +46,8 @@ import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
 import { defineComponent, reactive, ref, toRaw, UnwrapRef } from "vue";
 import { message } from "ant-design-vue";
 import { useRouter } from "vue-router";
-import { hashSync } from "bcryptjs";
 import { loginUser } from "@/service/login";
+import { useStore } from "vuex";
 
 interface FormState {
   user: string;
@@ -58,7 +58,9 @@ export default defineComponent({
   name: "Login",
   setup(props, ctx) {
     const router = useRouter();
+    const store = useStore();
     const formRef = ref();
+
     const formState: UnwrapRef<FormState> = reactive({
       user: "",
       password: "",
@@ -336,6 +338,6 @@ export default defineComponent({
 
 .sky .login {
   height: 44px;
-  background: rgba(30, 144, 255, 0.6);
+  // background-color: fade(@primary-color, 60%);
 }
 </style>

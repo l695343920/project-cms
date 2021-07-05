@@ -5,37 +5,74 @@
 import { createRouter, createWebHistory } from "vue-router";
 import NProgress from "nprogress";
 import "nprogress/nprogress.css";
-// 路由信息
-const routes = [
+import store from "@/store";
+
+//静态路由
+const defaultRouter = [
   {
     path: "/",
-    name: "Home",
+    name: "首页",
     redirect: "/login",
+  },
+  {
+    path: "/login",
+    name: "登录",
+    component: () => import("@/pages/login/index.vue"),
+  },
+];
+
+const asyncRouter = [
+  {
+    path: "/",
+    name: "首页",
+    redirect: "/work",
     component: () => import("@/layout/index.vue"),
     children: [
       {
+        code: 100,
         path: "/work",
-        name: "Work",
+        name: "工作台",
+        meta: { icon: "home-outlined" },
         component: () => import("@/pages/work/index.vue"),
       },
       {
+        code: 200,
         path: "/book",
-        name: "Book",
+        name: "图书管理",
+        meta: { icon: "calendar-outlined" },
+        redirect: "/book/list",
+        component: () => import("@/pages/book/index.vue"),
+        children: [],
+      },
+      {
+        code: 201,
+        path: "/book/list",
+        name: "图书列表",
+        meta: { icon: "book-outlined" },
         component: () => import("@/pages/book/index.vue"),
       },
       {
+        code: 300,
         path: "/sys",
-        name: "Sys",
+        name: "系统管理",
+        meta: { icon: "setting-outlined" },
+        redirect: "/sys/list",
+        component: () => import("@/pages/sys/index.vue"),
+        children: [],
+      },
+      {
+        code: 301,
+        path: "/sys/list",
+        name: "用户列表",
+        meta: { icon: "user-outlined" },
         component: () => import("@/pages/sys/index.vue"),
       },
     ],
   },
-  {
-    path: "/login",
-    name: "Login",
-    component: () => import("@/pages/login/index.vue"),
-  },
 ];
+
+// 路由信息
+const routes = [...defaultRouter];
 
 // 导出路由
 const router = createRouter({
@@ -51,7 +88,15 @@ router.beforeEach((to, from, next) => {
   if (to.path === "/login") return next();
   // 获取用户本地的token, 如果token不存在则跳转到登录页
   const tokenStr = localStorage.getItem("token");
-  if (!tokenStr) return next("/login");
+  if (!tokenStr) {
+    return next("/login");
+  }
+  if (!store.state.router.routers) {
+    // 请求路由
+    store.dispatch("router/fetchRouters");
+    // 触发重定向
+    return next();
+  }
   next();
 });
 
@@ -59,4 +104,4 @@ router.afterEach(() => {
   NProgress.done();
 });
 
-export default router;
+export { asyncRouter, router };

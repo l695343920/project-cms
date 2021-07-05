@@ -68,7 +68,6 @@ const columns = [
     title: "用户名",
     dataIndex: "name",
     key: "name",
-    width: "25%",
     ellipsis: true,
     // slots: { customRender: "name" },
   },
@@ -76,15 +75,19 @@ const columns = [
     title: "头像",
     dataIndex: "avatar",
     key: "avatar",
-    width: "25%",
     ellipsis: true,
     slots: { customRender: "avatar" },
+  },
+  {
+    title: "角色名称",
+    dataIndex: "roleName",
+    key: "roleName",
+    ellipsis: true,
   },
   {
     title: "创建时间",
     dataIndex: "create_time",
     key: "create_time",
-    width: "25%",
     ellipsis: true,
     slots: { customRender: "create_time" },
   },
@@ -92,7 +95,6 @@ const columns = [
     title: "操作",
     dataIndex: "action",
     key: "action",
-    width: "25%",
     slots: { customRender: "action" },
   },
 ];
@@ -116,6 +118,12 @@ const formState = [
 //baseform 验证规则
 const rules = {
   name: [
+    {
+      required: true,
+      message: "不能为空！",
+    },
+  ],
+  roleName: [
     {
       required: true,
       message: "不能为空！",
@@ -162,6 +170,23 @@ export default defineComponent({
         placeholder: "请填写用户名",
         label: "用户名",
         maxLength: 15,
+      },
+      {
+        type: "select",
+        name: "roleName",
+        initialValue: "",
+        placeholder: "请选择",
+        label: "角色",
+        options: [
+          {
+            label: "超级管理员",
+            value: "1",
+          },
+          {
+            label: "普通用户",
+            value: "2",
+          },
+        ],
       },
       {
         type: "upload",

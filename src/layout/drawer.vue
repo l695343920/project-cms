@@ -24,6 +24,16 @@
         >{{ item.name }}</a-tag
       >
     </div>
+    <p>导航模式</p>
+    <div>
+      <a-tag
+        v-for="(item, index) in siderData"
+        class="tag"
+        @click="() => siderChange(item.value)"
+        :color="item.bg"
+        >{{ item.name }}</a-tag
+      >
+    </div>
   </a-drawer>
 </template>
 
@@ -31,12 +41,15 @@
 import { defineComponent, ref, getCurrentInstance } from "vue";
 import { SettingOutlined } from "@ant-design/icons-vue";
 import { replaceStyleVariables } from "vite-plugin-theme/es/client";
+import { useStore } from "vuex";
+import { message } from "ant-design-vue";
 export default defineComponent({
   name: "Drawer",
   components: {
     SettingOutlined,
   },
   setup(props, context) {
+    const store = useStore();
     const currentInstance: any = getCurrentInstance();
     const visible = ref<boolean>(false);
     const afterVisibleChange = (bool: boolean) => {
@@ -48,28 +61,25 @@ export default defineComponent({
       visible.value = true;
     };
 
+    //全局提示
+    const success = () => {
+      const hide = message.loading("正在加载主题");
+      setTimeout(hide, 2500);
+    };
+
     //改变主题色
     const tagChange = async (color: string) => {
       await replaceStyleVariables({
         colorVariables: [color],
       });
-      // currentInstance.appContext.config.globalProperties.$initThemeBgColor(
-      //   color
-      // );
-      // (window as any).less
-      //   .modifyVars({
-      //     "@primary-color": color,
-      //     "@link-color": color,
-      //     "@btn-primary-bg": color,
-      //   })
-      //   .then(() => {
-      //     console.log(1);
-      //   })
-      //   .catch((err: any) => {
-      //     console.log(2, err);
-      //   });
+      success();
     };
 
+    //改变左边菜单主题
+    const siderChange = (color: string) => {
+      store.dispatch("layout/fetchTheme", color);
+      success();
+    };
     return {
       visible,
       afterVisibleChange,
@@ -85,6 +95,11 @@ export default defineComponent({
         { name: "粉红色", value: "pink" },
         { name: "橙黄色", value: "orange" },
       ],
+      siderData: [
+        { name: "普通模式", bg: "blue", value: "light" },
+        { name: "暗黑模式", bg: "black", value: "dark" },
+      ],
+      siderChange,
     };
   },
 });

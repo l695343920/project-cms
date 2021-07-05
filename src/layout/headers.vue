@@ -89,7 +89,6 @@ export default defineComponent({
 </script>
 <style lang="less">
 .header {
-  background: @primary-color;
   padding: 0;
   position: relative;
 }

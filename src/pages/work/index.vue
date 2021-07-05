@@ -40,6 +40,7 @@ import {
   ref,
   onMounted,
   getCurrentInstance,
+  onUnmounted,
 } from "vue";
 import * as echarts from "echarts";
 import { option, option1, option2, option3, option4 } from "./config";
@@ -47,6 +48,7 @@ import { option, option1, option2, option3, option4 } from "./config";
 export default defineComponent({
   name: "Work",
   setup(props, ctx) {
+    let myChartMain, myChartSub, myChartSmall, myChartSmall1, myChartSmall2;
     onMounted(() => {
       initMian();
       initSub();
@@ -55,57 +57,64 @@ export default defineComponent({
       initSmall2();
     });
 
+    onUnmounted(() => {
+      myChartMain.dispose();
+      myChartSub.dispose();
+      myChartSmall.dispose();
+      myChartSmall1.dispose();
+      myChartSmall2.dispose();
+    });
+
     const initMian = () => {
       let chartDom = document.getElementById("main");
       if (!chartDom) return false;
-      let myChart = echarts.init(chartDom);
-      option && myChart.setOption(option);
-      myChart.resize();
+      myChartMain = echarts.init(chartDom);
+      option && myChartMain.setOption(option);
       window.addEventListener("resize", function () {
-        myChart.resize();
+        myChartMain.resize();
       });
     };
 
     const initSub = () => {
       let chartDom = document.getElementById("sub");
       if (!chartDom) return false;
-      let myChart = echarts.init(chartDom);
-      option && myChart.setOption(option1);
-      myChart.resize();
+      myChartSub = echarts.init(chartDom);
+      option && myChartSub.setOption(option1);
+      myChartSub.resize();
       window.addEventListener("resize", function () {
-        myChart.resize();
+        myChartSub.resize();
       });
     };
 
     const initSmall = () => {
       let chartDom = document.getElementById("small");
       if (!chartDom) return false;
-      let myChart = echarts.init(chartDom);
-      option && myChart.setOption(option2);
-      myChart.resize();
+      myChartSmall = echarts.init(chartDom);
+      option && myChartSmall.setOption(option2);
+      myChartSmall.resize();
       window.addEventListener("resize", function () {
-        myChart.resize();
+        myChartSmall.resize();
       });
     };
 
     const initSmall1 = () => {
       let chartDom = document.getElementById("small1");
       if (!chartDom) return false;
-      let myChart = echarts.init(chartDom);
-      option && myChart.setOption(option3);
-      myChart.resize();
+      myChartSmall1 = echarts.init(chartDom);
+      option && myChartSmall1.setOption(option3);
+      myChartSmall1.resize();
       window.addEventListener("resize", function () {
-        myChart.resize();
+        myChartSmall1.resize();
       });
     };
 
     const initSmall2 = () => {
       let chartDom = document.getElementById("small2");
       if (!chartDom) return false;
-      let myChart = echarts.init(chartDom);
-      option && myChart.setOption(option4);
+      myChartSmall2 = echarts.init(chartDom);
+      option && myChartSmall2.setOption(option4);
       window.addEventListener("resize", function () {
-        myChart.resize();
+        myChartSmall2.resize();
       });
     };
     const currentInstance: any = getCurrentInstance();

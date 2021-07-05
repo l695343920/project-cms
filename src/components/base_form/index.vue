@@ -1,7 +1,7 @@
 <!--
  * @Descripttion: 基础表单封装
  * @Date: 2021-05-20 21:10:24
- * @LastEditTime: 2021-06-18 23:40:47
+ * @LastEditTime: 2021-07-06 01:10:07
 -->
 <template>
   <a-form
@@ -22,6 +22,12 @@
         v-if="item.type === 'text'"
         v-model:value="formDatas[item.name]"
         :maxLength="item.maxLength"
+        :placeholder="item.placeholder"
+      />
+      <a-select
+        v-if="item.type === 'select'"
+        v-model:value="formDatas[item.name]"
+        :options="item.options"
         :placeholder="item.placeholder"
       />
       <a-textarea
