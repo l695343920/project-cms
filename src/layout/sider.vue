@@ -88,7 +88,7 @@ export default defineComponent({
     const openKeys = ref<string[]>([]);
 
     const store = useStore();
-    const theme: string = computed(() => store.state.layout.theme); // 这里注意指定模块
+    const theme = computed(() => store.state.layout.theme); // 这里注意指定模块
 
     const handleClick = (e: any) => {
       if (e.key === "1") {

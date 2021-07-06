@@ -123,7 +123,7 @@ const rules = {
       message: "不能为空！",
     },
   ],
-  roleName: [
+  roleId: [
     {
       required: true,
       message: "不能为空！",
@@ -173,7 +173,7 @@ export default defineComponent({
       },
       {
         type: "select",
-        name: "roleName",
+        name: "roleId",
         initialValue: "",
         placeholder: "请选择",
         label: "角色",

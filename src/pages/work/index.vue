@@ -48,7 +48,11 @@ import { option, option1, option2, option3, option4 } from "./config";
 export default defineComponent({
   name: "Work",
   setup(props, ctx) {
-    let myChartMain, myChartSub, myChartSmall, myChartSmall1, myChartSmall2;
+    let myChartMain: any,
+      myChartSub: any,
+      myChartSmall: any,
+      myChartSmall1: any,
+      myChartSmall2: any;
     onMounted(() => {
       initMian();
       initSub();

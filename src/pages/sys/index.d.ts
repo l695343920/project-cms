@@ -1,13 +1,17 @@
 /*
  * @Descripttion: index.d.ts
  * @Date: 2021-05-20 14:44:52
- * @LastEditTime: 2021-06-17 21:54:53
+ * @LastEditTime: 2021-07-06 01:39:26
  */
 export interface formState {
   name: string;
   create_time: string;
 }
 
+interface optionItem {
+  label: string;
+  value: string;
+}
 export interface formConfigState {
   type: string;
   name: string;
@@ -18,6 +22,7 @@ export interface formConfigState {
   action?: string;
   list_type?: string;
   accept?: string;
+  options?: optionItem[];
 }
 
 export interface FileItem {

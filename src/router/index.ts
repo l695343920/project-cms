@@ -91,7 +91,7 @@ router.beforeEach((to, from, next) => {
   if (!tokenStr) {
     return next("/login");
   }
-  if (!store.state.router.routers) {
+  if (!(store as any).state.router.routers) {
     // 请求路由
     store.dispatch("router/fetchRouters");
     // 触发重定向
