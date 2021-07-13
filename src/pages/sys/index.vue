@@ -80,8 +80,8 @@ const columns = [
   },
   {
     title: "角色名称",
-    dataIndex: "roleName",
-    key: "roleName",
+    dataIndex: "role.roleName",
+    key: "role.roleName",
     ellipsis: true,
   },
   {
@@ -108,10 +108,11 @@ const formState = [
     placeholder: "用户名",
   },
   {
-    type: "date-picker",
-    name: "create_time",
+    type: "range-picker",
+    name: ["start_time", "end_time"],
     initialValue: "",
-    placeholder: "创建时间",
+    placeholder: ["开始时间", "结束时间"],
+    format: "YYYY-MM-DD",
   },
 ];
 

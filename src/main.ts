@@ -1,7 +1,7 @@
 /*
  * @Descripttion: main
  * @Date: 2021-05-03 10:15:41
- * @LastEditTime: 2021-07-04 00:53:35
+ * @LastEditTime: 2021-07-10 17:33:11
  */
 import { createApp } from "vue";
 import App from "./App.vue";

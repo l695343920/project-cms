@@ -1,7 +1,7 @@
 <!--
  * @Descripttion: 搜索功能表格封装
  * @Date: 2021-05-18 20:14:05
- * @LastEditTime: 2021-06-23 02:17:35
+ * @LastEditTime: 2021-07-13 10:06:30
 -->
 <template>
   <a-form
@@ -27,6 +27,14 @@
         v-else-if="item.type === 'date-picker'"
         v-model:value="formData[item.name]"
         :placeholder="item.placeholder"
+        :format="item.format"
+      />
+      <a-range-picker
+        v-else-if="item.type === 'range-picker'"
+        v-model:value="formData[item.name]"
+        :placeholder="item.placeholder"
+        :format="item.format"
+        @change="onChange"
       />
     </a-form-item>
     <a-form-item>
@@ -80,6 +88,7 @@ import {
 } from "vue";
 import { get } from "@/utils/request";
 import { ParamsState, Pagination, Filters } from "./index.d";
+import moment, { Moment } from "moment";
 
 export default defineComponent({
   props: {
@@ -193,6 +202,11 @@ export default defineComponent({
       params.pageSize = pag.pageSize;
       featchList();
     };
+    //时间范围改变
+    const onChange = (value: Moment[], dateString: string[]) => {
+      console.log("Selected Time: ", value);
+      console.log("Formatted Selected Time: ", dateString);
+    };
     const isPhone = /Android|webOS|iPhone|iPod|BlackBerry/i.test(
       navigator.userAgent
     );
@@ -213,6 +227,7 @@ export default defineComponent({
       columnsArr,
       //是否是移动端
       isPhone,
+      onChange,
     };
   },
 });

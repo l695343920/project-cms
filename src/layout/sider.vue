@@ -16,36 +16,29 @@
       mode="inline"
       v-model:openKeys="openKeys"
       v-model:selectedKeys="selectedKeys"
-      @click="handleClick"
     >
-      <a-menu-item key="1">
-        <home-outlined />
-        <span>工作台</span>
-      </a-menu-item>
-      <a-sub-menu key="sub2">
-        <template #title>
-          <span>
-            <calendar-outlined />
-            <span>图书管理</span>
-          </span>
+      <template v-for="(item, index) in routerData">
+        <template v-if="!item.children.length">
+          <a-menu-item :key="String(index)" @click="handleClick(item.path)">
+            <component :is="antIcons[item.meta.icon]"></component>
+            {{ item.name }}
+          </a-menu-item>
         </template>
-        <a-menu-item key="2">
-          <book-outlined />
-          <span>图书列表</span>
-        </a-menu-item>
-      </a-sub-menu>
-      <a-sub-menu key="sub3">
-        <template #title>
-          <span>
-            <setting-outlined />
-            <span>系统管理</span>
-          </span>
+        <template v-else>
+          <a-sub-menu :key="index">
+            <template #title>
+              <component :is="antIcons[item.meta.icon]"></component>
+              {{ item.name }}
+            </template>
+            <template v-for="(subItem, i) in item.children">
+              <a-menu-item :keys="i" @click="handleClick(item.path)">
+                <component :is="antIcons[subItem.meta.icon]"></component>
+                {{ subItem.name }}
+              </a-menu-item>
+            </template>
+          </a-sub-menu>
         </template>
-        <a-menu-item key="3">
-          <user-outlined />
-          <span>用户列表</span>
-        </a-menu-item>
-      </a-sub-menu>
+      </template>
     </a-menu>
   </a-layout-sider>
 </template>
@@ -57,7 +50,14 @@ import {
   UserOutlined,
   HomeOutlined,
 } from "@ant-design/icons-vue";
-import { defineComponent, ref, reactive, computed } from "vue";
+import {
+  defineComponent,
+  ref,
+  reactive,
+  computed,
+  getCurrentInstance,
+  onMounted,
+} from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
 
@@ -84,28 +84,59 @@ export default defineComponent({
   },
   setup() {
     const router = useRouter();
-    const selectedKeys = ref<string[]>(["1"]);
-    const openKeys = ref<string[]>([]);
+    let selectedKeys = ref<string[]>([]); //选中的菜单
+    let openKeys = ref<string[]>([]); //打开的菜单
 
     const store = useStore();
-    const theme = computed(() => store.state.layout.theme); // 这里注意指定模块
+    const currentInstance: any = getCurrentInstance();
+    const theme = computed(() => store.state.layout.theme); // 主题色
+    const routerData = computed(() => store.state.router.routers); // 路由
+    const antIcons = //图标
+      currentInstance.appContext.config.globalProperties.$antIcons;
 
-    const handleClick = (e: any) => {
-      if (e.key === "1") {
-        router.push("/work");
-      }
-      if (e.key === "2") {
-        router.push("/book/list");
-      }
-      if (e.key === "3") {
-        router.push("/sys/list");
-      }
+    onMounted(() => {
+      initKeys();
+    });
+
+    //设置默认的选中菜单
+    const initKeys = () => {
+      const pathname = location.pathname;
+      let key: any;
+      const searchKeys = (arr: any[], isChild: boolean) => {
+        arr.forEach((obj: any, index: Number) => {
+          if (!isChild) {
+            key = index;
+          }
+          if (obj.path === pathname) {
+            selectedKeys.value = [
+              isChild ? `sub${key}-menu-item_${index}` : String(index),
+            ];
+            openKeys.value = [`sub${key}`];
+          }
+          searchKeys(obj.children, true);
+        });
+      };
+      searchKeys(routerData.value, false);
     };
+
+    //菜单点击跳转
+    const handleClick = (path: string) => {
+      router.push(path);
+    };
+
+    //获得sub-mean的标识
+    const getSub = (index: any) => {
+      return "sub" + index;
+    };
+    
     return {
       selectedKeys,
       openKeys,
       handleClick,
       theme,
+      routerData,
+      antIcons,
+      getSub,
     };
   },
 });
