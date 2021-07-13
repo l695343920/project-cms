@@ -38,7 +38,7 @@ import {
   DownOutlined,
 } from "@ant-design/icons-vue";
 import { defineComponent, ref, reactive } from "vue";
-import { useRouter } from "vue-router";
+import { signOut } from "@/utils/utils";
 
 export default defineComponent({
   props: {
@@ -55,7 +55,6 @@ export default defineComponent({
     DownOutlined,
   },
   setup(props, context) {
-    const router = useRouter();
 
     //获取用户信息
     let userInfo: any = localStorage.getItem("userInfo");
@@ -73,10 +72,9 @@ export default defineComponent({
     };
     //头像下拉菜单
     const handleMenuClick = (e: any) => {
+      //退出
       if (e.item.index === 1) {
-        router.push("/login");
-        localStorage.removeItem("userInfo");
-        localStorage.removeItem("token");
+        signOut();
       }
     };
     return {

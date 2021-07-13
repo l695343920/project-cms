@@ -4,7 +4,7 @@
 import axios from "axios";
 import { message } from "ant-design-vue";
 import { useRouter } from "vue-router";
-const router = useRouter();
+import { signOut } from "@/utils/utils";
 
 axios.defaults.baseURL = "/api";
 
@@ -53,7 +53,7 @@ axios.interceptors.response.use(
         // 清除本地token和清空vuex中token对象
         // 跳转登录页面
         case 403:
-          router.push("/login");
+          signOut()
           break;
         // 404请求不存在
         case 404:
