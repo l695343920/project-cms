@@ -25,7 +25,7 @@
           </a-menu-item>
         </template>
         <template v-else>
-          <a-sub-menu :key="index">
+          <a-sub-menu :key="String(index)">
             <template #title>
               <component :is="antIcons[item.meta.icon]"></component>
               {{ item.name }}
@@ -128,7 +128,7 @@ export default defineComponent({
     const getSub = (index: any) => {
       return "sub" + index;
     };
-    
+
     return {
       selectedKeys,
       openKeys,
