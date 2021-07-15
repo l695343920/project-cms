@@ -25,13 +25,13 @@
           </a-menu-item>
         </template>
         <template v-else>
-          <a-sub-menu :key="String(index)">
+          <a-sub-menu :key="getSub(index)">
             <template #title>
               <component :is="antIcons[item.meta.icon]"></component>
               {{ item.name }}
             </template>
             <template v-for="(subItem, i) in item.children">
-              <a-menu-item :keys="i" @click="handleClick(item.path)">
+              <a-menu-item :keys="i" @click="handleClick(subItem.path)">
                 <component :is="antIcons[subItem.meta.icon]"></component>
                 {{ subItem.name }}
               </a-menu-item>

@@ -1,10 +1,10 @@
 <!--
- * @Descripttion: 系统页面
+ * @Descripttion: 角色列表
  * @Date: 2021-05-26 20:39:46
 -->
 <template>
   <search-table
-    url="user/list"
+    url="role/list"
     :columns="columns"
     :formState="formState"
     :tool="tool"
@@ -18,11 +18,13 @@
     </template>
     <template #action="{ record }">
       <a-space>
+        <a @click="editData(record.id)" v-if="record.id != 1">编辑</a>
         <a-popconfirm
           title="确定删除嘛？"
           ok-text="确认"
           cancel-text="取消"
           @confirm="delConfirm(record.id)"
+          v-if="record.id != 1"
         >
           <a>删除</a>
         </a-popconfirm>
@@ -55,41 +57,27 @@ import {
   toRaw,
   UnwrapRef,
   computed,
+  onMounted,
 } from "vue";
 import SearchTable from "@/components/search_table/index.vue";
 import BaseForm from "@/components/base_form/index.vue";
 import { formState, formConfigState, FileItem } from "./index.d";
 import { message } from "ant-design-vue";
-import { addUser, editUser, delUser, detailUser } from "@/service/user";
+import { addRole, editRole, delRole, detailRole } from "@/service/role";
 
 //表格列配置
 const columns = [
   {
-    title: "用户名",
-    dataIndex: "name",
-    key: "name",
+    title: "ID",
+    dataIndex: "id",
+    key: "id",
     ellipsis: true,
-    // slots: { customRender: "name" },
-  },
-  {
-    title: "头像",
-    dataIndex: "avatar",
-    key: "avatar",
-    ellipsis: true,
-    slots: { customRender: "avatar" },
   },
   {
     title: "角色名称",
-    dataIndex: "role.roleName",
-    key: "role.roleName",
+    dataIndex: "name",
+    key: "name",
     ellipsis: true,
-  },
-  {
-    title: "创建时间",
-    dataIndex: "create_time",
-    key: "create_time",
-    ellipsis: true,
-    slots: { customRender: "create_time" },
   },
   {
     title: "操作",
@@ -107,13 +95,6 @@ const formState = [
     initialValue: "",
     placeholder: "用户名",
   },
-  {
-    type: "range-picker",
-    name: ["start_time", "end_time"],
-    initialValue: "",
-    placeholder: ["开始时间", "结束时间"],
-    format: "YYYY-MM-DD",
-  },
 ];
 
 //baseform 验证规则
@@ -124,22 +105,10 @@ const rules = {
       message: "不能为空！",
     },
   ],
-  roleId: [
-    {
-      required: true,
-      message: "不能为空！",
-    },
-  ],
-  avatar: [
-    {
-      required: true,
-      message: "不能为空！",
-    },
-  ],
 };
 
 export default defineComponent({
-  name: "Sys",
+  name: "Role",
   components: {
     SearchTable,
     BaseForm,
@@ -153,7 +122,7 @@ export default defineComponent({
     const loading = ref<boolean>(false);
     //弹窗标题
     const title = computed(() => {
-      return `${getId.value ? "修改" : "新增"}用户`;
+      return `${getId.value ? "修改" : "新增"}角色`;
     });
 
     //刷新表格数据
@@ -168,37 +137,9 @@ export default defineComponent({
         type: "text",
         name: "name",
         initialValue: "",
-        placeholder: "请填写用户名",
-        label: "用户名",
+        placeholder: "请填写角色名",
+        label: "角色名",
         maxLength: 15,
-      },
-      {
-        type: "select",
-        name: "roleId",
-        initialValue: "",
-        placeholder: "请选择",
-        label: "角色",
-        options: [
-          {
-            label: "超级管理员",
-            value: "1",
-          },
-          {
-            label: "普通用户",
-            value: "2",
-          },
-        ],
-      },
-      {
-        type: "upload",
-        name: "avatar",
-        initialValue: "",
-        placeholder: "请上传头像",
-        label: "头像",
-        action: "/api/public/upload",
-        list_type: "picture",
-        maxLength: 1,
-        accept: "image/png, image/jpeg, image/gif, image/jpg",
       },
     ]);
 
@@ -217,10 +158,10 @@ export default defineComponent({
                 const requestData = async () => {
                   //修改
                   if (getId.value) {
-                    return await editUser({ id: getId.value, ...result });
+                    return await editRole({ id: getId.value, ...result });
                   } else {
                     //新增
-                    return await addUser(result);
+                    return await addRole(result);
                   }
                 };
                 const res: any = await requestData();
@@ -271,9 +212,21 @@ export default defineComponent({
       visible.value = state;
     };
 
+    //编辑
+    const editData = async (id: number) => {
+      getId.value = id;
+      const res: any = await detailRole({ id });
+      if (res) {
+        formConfig.forEach((obj: any) => {
+          obj.initialValue = res.data[obj.name];
+        });
+        changeVisible(true);
+      }
+    };
+
     //删除
     const delConfirm = async (id: number) => {
-      const res: any = await delUser({ id });
+      const res: any = await delRole({ id });
       if (res) {
         message.success("操作成功!");
         reset();
@@ -290,6 +243,7 @@ export default defineComponent({
       title,
       rules,
       delConfirm,
+      editData,
     };
   },
 });

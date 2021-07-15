@@ -1,7 +1,7 @@
 <!--
  * @Descripttion: 基础表单封装
  * @Date: 2021-05-20 21:10:24
- * @LastEditTime: 2021-07-06 01:10:07
+ * @LastEditTime: 2021-07-15 04:11:27
 -->
 <template>
   <a-form
@@ -27,9 +27,15 @@
       <a-select
         v-if="item.type === 'select'"
         v-model:value="formDatas[item.name]"
-        :options="item.options"
         :placeholder="item.placeholder"
-      />
+      >
+        <a-select-option
+          v-for="(obj, index) in item.options"
+          :value="getOptionValue(obj, item)"
+        >
+          {{ getOptionLabel(obj, item) }}
+        </a-select-option>
+      </a-select>
       <a-textarea
         v-else-if="item.type === 'textarea'"
         v-model:value="formDatas[item.name]"
@@ -166,6 +172,12 @@ export default defineComponent({
         loading.value = false;
       };
     };
+    const getOptionLabel = (obj: any, item: any) => {
+      return obj[item.optionLabelName] || "lable";
+    };
+    const getOptionValue = (obj: any, item: any) => {
+      return obj[item.optionValueName] || "value";
+    };
     return {
       formRef,
       formDatas,
@@ -173,6 +185,8 @@ export default defineComponent({
       footerArr,
       uploadChange,
       loading,
+      getOptionLabel,
+      getOptionValue,
     };
   },
 });
