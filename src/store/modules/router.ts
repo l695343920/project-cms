@@ -18,10 +18,12 @@ export default {
       const res: any = await getList();
       let defaultMap: any = new Object();
       let routerMap: any = new Object();
+      let result: any[] = [];
       router.addRoute(asyncRouter[0]);
       asyncRouter[0].children.forEach((obj: any) => {
         defaultMap[obj.code] = obj;
       });
+      //进行数据合并
       res.data.forEach((obj: any) => {
         let value = defaultMap[obj.code];
         if (value) {
@@ -32,17 +34,19 @@ export default {
           routerMap[obj.id] = value;
         }
       });
+      //数据分层
       Object.values(routerMap).forEach((obj: any) => {
         let value = routerMap[obj.parentId];
-        if (value && obj.id !== obj.parentId) {
+        if (obj.id === obj.parentId) {
+          result.push(routerMap[obj.id]);
+        } else {
           value.children.push(obj);
-          delete routerMap[obj.id];
         }
         routerMap[obj.id] && router.addRoute("首页", routerMap[obj.id]);
       });
-      let data: any = Object.values(routerMap);
+      let data: any = result;
       commit("setRouters", data);
-      router.replace(router.currentRoute.value.fullPath)
+      router.replace(router.currentRoute.value.fullPath);
     },
   },
   mutations: {

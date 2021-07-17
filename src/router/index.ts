@@ -57,7 +57,7 @@ const asyncRouter = [
         name: "系统管理",
         meta: { icon: "SettingOutlined" },
         redirect: "/sys/list",
-        component: () => import("@/pages/sys/index.vue"),
+        component: () => import("@/pages/sys/user/index.vue"),
         children: [],
       },
       {

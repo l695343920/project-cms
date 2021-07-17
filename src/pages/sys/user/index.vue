@@ -60,7 +60,8 @@ import {
 } from "vue";
 import SearchTable from "@/components/search_table/index.vue";
 import BaseForm from "@/components/base_form/index.vue";
-import { formState, formConfigState, FileItem } from "./index.d";
+import { formProps } from "./index.d";
+import { formStateProps } from "@/components/base_form/index.d";
 import { message } from "ant-design-vue";
 import { addUser, editUser, delUser, detailUser } from "@/service/user";
 import { getRole } from "@/service/role";
@@ -160,16 +161,13 @@ export default defineComponent({
     //角色options
     let roleOptions = reactive([]);
 
-    const getRoleOptions = computed(() => {
-      return roleOptions;
-    });
     onMounted(() => {
       getRoleList();
     });
 
     //获取角色列表
     const getRoleList = async () => {
-      const roleList = await getRole();
+      const roleList: any = await getRole();
       roleOptions = roleList.data.data;
     };
 
@@ -180,7 +178,7 @@ export default defineComponent({
       }
     };
 
-    let formConfig = reactive<formConfigState[]>([
+    let formConfig = reactive<formStateProps[]>([
       {
         type: "text",
         name: "name",
@@ -195,7 +193,7 @@ export default defineComponent({
         initialValue: "",
         placeholder: "请选择",
         label: "角色",
-        options: getRoleOptions,
+        options: roleOptions,
         optionLabelName: "name",
         optionValueName: "id",
       },
@@ -220,7 +218,7 @@ export default defineComponent({
         loading,
         onClick: (e: any) => {
           e.validate()
-            .then(async (result: formState) => {
+            .then(async (result: formProps) => {
               loading.value = true;
               try {
                 //请求数据
@@ -245,7 +243,7 @@ export default defineComponent({
               }
               loading.value = false;
             })
-            .catch((error: ValidateErrorEntity<formState>) => {
+            .catch((error: ValidateErrorEntity<formProps>) => {
               console.log("error", error);
             });
         },
@@ -269,10 +267,10 @@ export default defineComponent({
         onClick: () => {
           //重置数据
           getId.value = null;
+          formConfig[1].options = roleOptions;
           formConfig.forEach((obj: any) => {
             obj.initialValue = "";
           });
-          console.log(formConfig, 111111);
           changeVisible(true);
         },
       },

@@ -1,7 +1,7 @@
 <!--
  * @Descripttion: 图书管理列表
  * @Date: 2021-05-03 10:32:30
- * @LastEditTime: 2021-06-23 00:52:52
+ * @LastEditTime: 2021-07-17 11:13:44
 -->
 <template>
   <div>
@@ -63,7 +63,8 @@ import { ref, defineComponent, reactive, UnwrapRef, computed } from "vue";
 import { addBook, editBook, delBook, detailBook } from "@/service/book";
 import SearchTable from "@/components/search_table/index.vue";
 import BaseForm from "@/components/base_form/index.vue";
-import { formState, formConfigState } from "./index.d";
+import { formProps } from "./index.d";
+import { formStateProps } from "@/components/base_form/index.d";
 import { message } from "ant-design-vue";
 
 //表格列配置
@@ -155,7 +156,7 @@ export default defineComponent({
       }
     };
 
-    let formConfig = reactive<formConfigState[]>([
+    let formConfig = reactive<formStateProps[]>([
       {
         type: "text",
         name: "name",
@@ -181,7 +182,7 @@ export default defineComponent({
         loading,
         onClick: (e: any) => {
           e.validate()
-            .then(async (result: formState) => {
+            .then(async (result: formProps) => {
               loading.value = true;
               try {
                 //请求数据
@@ -206,7 +207,7 @@ export default defineComponent({
               }
               loading.value = false;
             })
-            .catch((error: ValidateErrorEntity<formState>) => {
+            .catch((error: ValidateErrorEntity<formProps>) => {
               console.log("error", error);
             });
         },

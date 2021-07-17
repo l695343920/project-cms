@@ -3,7 +3,6 @@
  */
 import axios from "axios";
 import { message } from "ant-design-vue";
-import { useRouter } from "vue-router";
 import { signOut } from "@/utils/utils";
 
 axios.defaults.baseURL = "/api";

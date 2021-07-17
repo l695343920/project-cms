@@ -1,7 +1,7 @@
 /*
  * @Descripttion:vite配置文件
  * @Date: 2021-05-03 10:15:41
- * @LastEditTime: 2021-07-10 15:56:26
+ * @LastEditTime: 2021-07-15 22:17:58
  */
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";
@@ -46,9 +46,8 @@ export default ({ mode }) => {
       // 自定义代理规则
       proxy: {
         "/api": {
-          target: __DEV__
-            ? "http://localhost:3001"
-            : "http://121.5.152.57:3001",
+          target: 
+            "http://121.5.152.57:3001",
         },
       },
     },

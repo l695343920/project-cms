@@ -1,7 +1,7 @@
 <!--
  * @Descripttion: 基础表单封装
  * @Date: 2021-05-20 21:10:24
- * @LastEditTime: 2021-07-15 04:11:27
+ * @LastEditTime: 2021-07-17 10:49:50
 -->
 <template>
   <a-form
@@ -86,7 +86,7 @@ import {
   PlusOutlined,
   LoadingOutlined,
 } from "@ant-design/icons-vue";
-import { defineComponent, reactive, ref, UnwrapRef } from "vue";
+import { defineComponent, reactive, ref, UnwrapRef, PropType } from "vue";
 import { message } from "ant-design-vue";
 import { uploadFile } from "@/service/upload";
 

@@ -7,14 +7,14 @@ import { get, post } from "@/utils/request";
 /**
  * @name:角色列表
  */
- export function getRole(params: any) {
+export function getRole(params?: any) {
   return get("role/list", params);
 }
 
 /**
  * @name:查看角色信息
  */
- export function detailRole(params: any) {
+export function detailRole(params: any) {
   return get("role/detail", params);
 }
 

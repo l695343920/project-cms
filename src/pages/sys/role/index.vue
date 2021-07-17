@@ -61,7 +61,8 @@ import {
 } from "vue";
 import SearchTable from "@/components/search_table/index.vue";
 import BaseForm from "@/components/base_form/index.vue";
-import { formState, formConfigState, FileItem } from "./index.d";
+import { formProps } from "./index.d";
+import { formStateProps } from "@/components/base_form/index.d";
 import { message } from "ant-design-vue";
 import { addRole, editRole, delRole, detailRole } from "@/service/role";
 
@@ -93,7 +94,7 @@ const formState = [
     type: "text",
     name: "name",
     initialValue: "",
-    placeholder: "用户名",
+    placeholder: "角色名",
   },
 ];
 
@@ -132,7 +133,7 @@ export default defineComponent({
       }
     };
 
-    let formConfig = reactive<formConfigState[]>([
+    let formConfig = reactive<formStateProps[]>([
       {
         type: "text",
         name: "name",
@@ -151,7 +152,7 @@ export default defineComponent({
         loading,
         onClick: (e: any) => {
           e.validate()
-            .then(async (result: formState) => {
+            .then(async (result: formProps) => {
               loading.value = true;
               try {
                 //请求数据
@@ -176,7 +177,7 @@ export default defineComponent({
               }
               loading.value = false;
             })
-            .catch((error: ValidateErrorEntity<formState>) => {
+            .catch((error: ValidateErrorEntity<formProps>) => {
               console.log("error", error);
             });
         },
