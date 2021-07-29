@@ -74,6 +74,13 @@ const asyncRouter = [
         meta: { icon: "UserSwitchOutlined" },
         component: () => import("@/pages/sys/role/index.vue"),
       },
+      {
+        code: 303,
+        path: "/sys/permission",
+        name: "权限管理",
+        meta: { icon: "SolutionOutlined" },
+        component: () => import("@/pages/sys/permission/index.vue"),
+      },
     ],
   },
 ];

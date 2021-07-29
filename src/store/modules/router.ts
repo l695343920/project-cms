@@ -5,6 +5,7 @@
 import { getList } from "@/service/mean";
 import { asyncRouter } from "@/router/index";
 import { router } from "@/router/index";
+import { routerProps } from "@/router/index.d";
 
 export default {
   namespaced: true,
@@ -18,13 +19,13 @@ export default {
       const res: any = await getList();
       let defaultMap: any = new Object();
       let routerMap: any = new Object();
-      let result: any[] = [];
+      let result: routerProps[] = [];
       router.addRoute(asyncRouter[0]);
       asyncRouter[0].children.forEach((obj: any) => {
         defaultMap[obj.code] = obj;
       });
       //进行数据合并
-      res.data.forEach((obj: any) => {
+      res.data.forEach((obj: routerProps) => {
         let value = defaultMap[obj.code];
         if (value) {
           value.children = [];
@@ -44,13 +45,13 @@ export default {
         }
         routerMap[obj.id] && router.addRoute("首页", routerMap[obj.id]);
       });
-      let data: any = result;
+      let data: routerProps[] = result;
       commit("setRouters", data);
       router.replace(router.currentRoute.value.fullPath);
     },
   },
   mutations: {
-    setRouters(state: any, res: any) {
+    setRouters(state: any, res: routerProps[]) {
       state.routers = res;
     },
   },

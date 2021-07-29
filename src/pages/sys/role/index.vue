@@ -18,13 +18,17 @@
     </template>
     <template #action="{ record }">
       <a-space>
-        <a @click="editData(record.id)" v-if="record.id != 1">编辑</a>
+        <a
+          @click="editData(record.id)"
+          v-if="record.id != 1 && hasPermission(8)"
+          >编辑</a
+        >
         <a-popconfirm
           title="确定删除嘛？"
           ok-text="确认"
           cancel-text="取消"
           @confirm="delConfirm(record.id)"
-          v-if="record.id != 1"
+          v-if="record.id != 1 && hasPermission(9)"
         >
           <a>删除</a>
         </a-popconfirm>
@@ -63,8 +67,10 @@ import SearchTable from "@/components/search_table/index.vue";
 import BaseForm from "@/components/base_form/index.vue";
 import { formProps } from "./index.d";
 import { formStateProps } from "@/components/base_form/index.d";
+import { toolProps } from "@/components/search_table/index.d";
 import { message } from "ant-design-vue";
 import { addRole, editRole, delRole, detailRole } from "@/service/role";
+import { useStore } from "vuex";
 
 //表格列配置
 const columns = [
@@ -115,6 +121,7 @@ export default defineComponent({
     BaseForm,
   },
   setup(props, ctx) {
+    const store = useStore();
     //选中数据的id
     const getId = ref<number | null>(null);
     //表格组件节点
@@ -126,11 +133,21 @@ export default defineComponent({
       return `${getId.value ? "修改" : "新增"}角色`;
     });
 
+    onMounted(() => {
+      getTool();
+    });
+
     //刷新表格数据
     const reset = () => {
       if (tableRef) {
         tableRef.value.featchList();
       }
+    };
+
+    //是否存在权限
+    const hasPermission = (id: number) => {
+      return computed(() => store.getters["permission/getPermission"](id))
+        .value;
     };
 
     let formConfig = reactive<formStateProps[]>([
@@ -193,21 +210,26 @@ export default defineComponent({
 
     //弹窗状态
     const visible = ref<boolean>(false);
+
     //表格工具栏
-    const tool = [
-      {
-        type: "primary",
-        label: "新增",
-        onClick: () => {
-          //重置数据
-          getId.value = null;
-          formConfig.forEach((obj: any) => {
-            obj.initialValue = "";
-          });
-          changeVisible(true);
-        },
-      },
-    ];
+    let tool = reactive<toolProps[]>([]);
+
+    const getTool = () => {
+      if (hasPermission(7)) {
+        tool.push({
+          type: "primary",
+          label: "新增",
+          onClick: () => {
+            //重置数据
+            getId.value = null;
+            formConfig.forEach((obj: any) => {
+              obj.initialValue = "";
+            });
+            changeVisible(true);
+          },
+        });
+      }
+    };
     //改变弹窗状态
     const changeVisible = (state: boolean) => {
       visible.value = state;
@@ -245,6 +267,7 @@ export default defineComponent({
       rules,
       delConfirm,
       editData,
+      hasPermission,
     };
   },
 });

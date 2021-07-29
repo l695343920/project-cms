@@ -23,7 +23,7 @@
           ok-text="确认"
           cancel-text="取消"
           @confirm="delConfirm(record.id)"
-          v-if="record.roleId != 1"
+          v-if="record.roleId != 1 && hasPermission(6)"
         >
           <a>删除</a>
         </a-popconfirm>
@@ -65,6 +65,9 @@ import { formStateProps } from "@/components/base_form/index.d";
 import { message } from "ant-design-vue";
 import { addUser, editUser, delUser, detailUser } from "@/service/user";
 import { getRole } from "@/service/role";
+import { useStore } from "vuex";
+import { permissionProps } from "@/router/index.d";
+import { toolProps } from "@/components/search_table/index.d";
 
 //表格列配置
 const columns = [
@@ -83,8 +86,8 @@ const columns = [
   },
   {
     title: "角色名称",
-    dataIndex: "role.roleName",
-    key: "role.roleName",
+    dataIndex: "role.name",
+    key: "role.name",
     ellipsis: true,
   },
   {
@@ -148,6 +151,7 @@ export default defineComponent({
     BaseForm,
   },
   setup(props, ctx) {
+    const store = useStore();
     //选中数据的id
     const getId = ref<number | null>(null);
     //表格组件节点
@@ -163,7 +167,14 @@ export default defineComponent({
 
     onMounted(() => {
       getRoleList();
+      getTool();
     });
+
+    //是否存在权限
+    const hasPermission = (id: number) => {
+      return computed(() => store.getters["permission/getPermission"](id))
+        .value;
+    };
 
     //获取角色列表
     const getRoleList = async () => {
@@ -260,21 +271,26 @@ export default defineComponent({
     //弹窗状态
     const visible = ref<boolean>(false);
     //表格工具栏
-    const tool = [
-      {
-        type: "primary",
-        label: "新增",
-        onClick: () => {
-          //重置数据
-          getId.value = null;
-          formConfig[1].options = roleOptions;
-          formConfig.forEach((obj: any) => {
-            obj.initialValue = "";
-          });
-          changeVisible(true);
-        },
-      },
-    ];
+    let tool = reactive<toolProps[]>([]);
+
+    const getTool = () => {
+      if (hasPermission(5)) {
+        tool.push({
+          type: "primary",
+          label: "新增",
+          onClick: () => {
+            //重置数据
+            getId.value = null;
+            formConfig[1].options = roleOptions;
+            formConfig.forEach((obj: any) => {
+              obj.initialValue = "";
+            });
+            changeVisible(true);
+          },
+        });
+      }
+    };
+
     //改变弹窗状态
     const changeVisible = (state: boolean) => {
       visible.value = state;
@@ -299,6 +315,7 @@ export default defineComponent({
       title,
       rules,
       delConfirm,
+      hasPermission,
     };
   },
 });

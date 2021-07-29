@@ -1,7 +1,7 @@
 <!--
  * @Descripttion: 图书管理列表
  * @Date: 2021-05-03 10:32:30
- * @LastEditTime: 2021-07-17 11:13:44
+ * @LastEditTime: 2021-07-24 17:58:50
 -->
 <template>
   <div>
@@ -13,26 +13,28 @@
       ref="tableRef"
     >
       <template #name="{ text, record }">
-        <a @click="editData(record.id)">{{ text }}</a>
+        <a @click="editData(record.id)" v-if="hasPermission(4)">{{ text }}</a>
+        <span v-else>{{ text }}</span>
       </template>
       <template #content="{ text }">
         <a-popover :content="text">
           {{ text }}
         </a-popover>
       </template>
-      <template #date="{ text }">
+      <template #create_time="{ text }">
         <a-popover :content="text">
           {{ text }}
         </a-popover>
       </template>
       <template #action="{ record }">
         <a-space>
-          <a @click="editData(record.id)">编辑</a>
+          <a @click="editData(record.id)" v-if="hasPermission(2)">编辑</a>
           <a-popconfirm
             title="确定删除嘛？"
             ok-text="确认"
             cancel-text="取消"
             @confirm="delConfirm(record.id)"
+            v-if="hasPermission(3)"
           >
             <a>删除</a>
           </a-popconfirm>
@@ -59,13 +61,23 @@
 
 <script lang="ts">
 import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
-import { ref, defineComponent, reactive, UnwrapRef, computed } from "vue";
+import {
+  ref,
+  defineComponent,
+  reactive,
+  UnwrapRef,
+  computed,
+  onMounted,
+} from "vue";
 import { addBook, editBook, delBook, detailBook } from "@/service/book";
 import SearchTable from "@/components/search_table/index.vue";
 import BaseForm from "@/components/base_form/index.vue";
 import { formProps } from "./index.d";
 import { formStateProps } from "@/components/base_form/index.d";
+import { toolProps } from "@/components/search_table/index.d";
+import { permissionProps } from "@/router/index.d";
 import { message } from "ant-design-vue";
+import { useStore } from "vuex";
 
 //表格列配置
 const columns = [
@@ -87,9 +99,9 @@ const columns = [
   },
   {
     title: "创建时间",
-    dataIndex: "date",
-    key: "date",
-    slots: { customRender: "date" },
+    dataIndex: "create_time",
+    key: "create_time",
+    slots: { customRender: "create_time" },
   },
   {
     title: "操作",
@@ -138,6 +150,7 @@ export default defineComponent({
   },
   name: "Book",
   setup: (props, cxt) => {
+    const store = useStore();
     //选中数据的id
     const getId = ref<number | null>(null);
     //表格组件节点
@@ -148,6 +161,12 @@ export default defineComponent({
     const title = computed(() => {
       return `${getId.value ? "修改" : "新增"}数据`;
     });
+
+    //是否存在权限
+    const hasPermission = (id: number) => {
+      return computed(() => store.getters["permission/getPermission"](id))
+        .value;
+    };
 
     //刷新表格数据
     const reset = () => {
@@ -224,20 +243,30 @@ export default defineComponent({
     //弹窗状态
     const visible = ref<boolean>(false);
     //表格工具栏
-    const tool = [
-      {
-        type: "primary",
-        label: "新增",
-        onClick: () => {
-          //重置数据
-          getId.value = null;
-          formConfig.forEach((obj: any) => {
-            obj.initialValue = "";
-          });
-          changeVisible(true);
-        },
-      },
-    ];
+    let tool = reactive<toolProps[]>([]);
+
+    onMounted(() => {
+      getTool();
+    });
+
+    //初始化tool
+    const getTool = () => {
+      if (hasPermission(1)) {
+        tool.push({
+          type: "primary",
+          label: "新增",
+          onClick: () => {
+            //重置数据
+            getId.value = null;
+            formConfig.forEach((obj: any) => {
+              obj.initialValue = "";
+            });
+            changeVisible(true);
+          },
+        });
+      }
+    };
+
     //改变弹窗状态
     const changeVisible = (state: boolean) => {
       visible.value = state;
@@ -274,6 +303,7 @@ export default defineComponent({
       delConfirm,
       editData,
       title,
+      hasPermission,
     };
   },
 });

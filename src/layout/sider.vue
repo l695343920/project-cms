@@ -19,7 +19,7 @@
     >
       <template v-for="(item, index) in routerData">
         <template v-if="!item.children.length">
-          <a-menu-item :key="String(index)" @click="handleClick(item.path)">
+          <a-menu-item :key="String(index)" @click="handleClick(item)">
             <component :is="antIcons[item.meta.icon]"></component>
             {{ item.name }}
           </a-menu-item>
@@ -31,7 +31,7 @@
               {{ item.name }}
             </template>
             <template v-for="(subItem, i) in item.children">
-              <a-menu-item :keys="i" @click="handleClick(subItem.path)">
+              <a-menu-item :keys="i" @click="handleClick(subItem)">
                 <component :is="antIcons[subItem.meta.icon]"></component>
                 {{ subItem.name }}
               </a-menu-item>
@@ -60,6 +60,7 @@ import {
 } from "vue";
 import { useRouter } from "vue-router";
 import { useStore } from "vuex";
+import { routerProps } from "@/router/index.d";
 
 export default defineComponent({
   props: {
@@ -102,8 +103,8 @@ export default defineComponent({
     const initKeys = () => {
       const pathname = location.pathname;
       let key: any;
-      const searchKeys = (arr: any[], isChild: boolean) => {
-        arr.forEach((obj: any, index: Number) => {
+      const searchKeys = (arr: routerProps[], isChild: boolean) => {
+        arr.forEach((obj: routerProps, index: Number) => {
           if (!isChild) {
             key = index;
           }
@@ -112,6 +113,7 @@ export default defineComponent({
               isChild ? `sub${key}-menu-item_${index}` : String(index),
             ];
             openKeys.value = [`sub${key}`];
+            store.dispatch("permission/fetchPermission", obj.permission);
           }
           searchKeys(obj.children, true);
         });
@@ -120,8 +122,9 @@ export default defineComponent({
     };
 
     //菜单点击跳转
-    const handleClick = (path: string) => {
-      router.push(path);
+    const handleClick = (item: routerProps) => {
+      router.push(item.path);
+      store.dispatch("permission/fetchPermission", item.permission);
     };
 
     //获得sub-mean的标识

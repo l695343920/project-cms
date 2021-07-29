@@ -5,11 +5,13 @@
 import { createStore } from "vuex";
 import layout from "./modules/layout";
 import router from "./modules/router";
+import permission from "./modules/permission";
 
 export default createStore({
   state: {},
   modules: {
     layout,
     router,
+    permission,
   },
 });
