@@ -10,5 +10,5 @@ export const signOut = () => {
   router.push("/login");
   localStorage.removeItem("userInfo");
   localStorage.removeItem("token");
-  store.commit("setRouters", []);
+  store.commit("setRouters", null);
 };

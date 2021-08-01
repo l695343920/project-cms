@@ -41,6 +41,7 @@ axios.interceptors.response.use(
   // 服务器状态码不是200的情况
   (error: any) => {
     if (error.response.status) {
+      const info = error.response.data.message;
       switch (error.response.status) {
         // 401: 未登录
         // 未登录则跳转登录页面，并携带当前页面的路径
@@ -52,7 +53,8 @@ axios.interceptors.response.use(
         // 清除本地token和清空vuex中token对象
         // 跳转登录页面
         case 403:
-          signOut()
+          message.error(info);
+          signOut();
           break;
         // 404请求不存在
         case 404:
@@ -60,7 +62,7 @@ axios.interceptors.response.use(
           break;
         // 其他错误，直接抛出错误提示
         default:
-          message.error(error.response.data.message);
+          message.error(info);
       }
       return Promise.reject(error.response);
     }

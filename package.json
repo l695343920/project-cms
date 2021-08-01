@@ -5,7 +5,7 @@
     "start": "vite",
     "build": "vue-tsc --noEmit && vite build",
     "serve": "vite preview",
-    "test": "jest ./test"
+    "test": "jest"
   },
   "dependencies": {
     "ant-design-vue": "^2.1.6",
@@ -16,6 +16,7 @@
     "nprogress": "^0.2.0",
     "vite-plugin-theme": "^0.8.1",
     "vue": "^3.0.5",
+    "vue-request": "^1.2.0",
     "vue-router": "^4.0.8",
     "vue-tsc": "^0.2.0",
     "vuex": "^4.0.2"

@@ -200,7 +200,7 @@ export default defineComponent({
         },
       },
       {
-        type: "",
+        type: "default",
         text: "取消",
         onClick: (e: Event) => {
           visible.value = false;

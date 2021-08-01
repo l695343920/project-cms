@@ -1,7 +1,7 @@
 /*
  * @Descripttion:vite配置文件
  * @Date: 2021-05-03 10:15:41
- * @LastEditTime: 2021-07-28 22:31:08
+ * @LastEditTime: 2021-08-01 13:11:51
  */
 import { defineConfig } from "vite";
 import vue from "@vitejs/plugin-vue";

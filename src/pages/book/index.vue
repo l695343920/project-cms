@@ -1,7 +1,7 @@
 <!--
  * @Descripttion: 图书管理列表
  * @Date: 2021-05-03 10:32:30
- * @LastEditTime: 2021-07-24 17:58:50
+ * @LastEditTime: 2021-08-01 18:59:18
 -->
 <template>
   <div>
@@ -232,7 +232,7 @@ export default defineComponent({
         },
       },
       {
-        type: "",
+        type: "default",
         text: "取消",
         onClick: (e: Event) => {
           visible.value = false;

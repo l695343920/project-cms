@@ -1,7 +1,7 @@
 <!--
  * @Descripttion: 搜索功能表格封装
  * @Date: 2021-05-18 20:14:05
- * @LastEditTime: 2021-07-13 10:06:30
+ * @LastEditTime: 2021-08-01 14:20:33
 -->
 <template>
   <a-form
@@ -48,6 +48,7 @@
       v-for="(item, index) in toolArr"
       :type="item.type"
       @click="item.onClick"
+      :class="item.class"
       >{{ item.label }}</a-button
     >
   </a-row>
@@ -77,7 +78,6 @@
 
 <script lang="ts">
 import { ValidateErrorEntity } from "ant-design-vue/es/form/interface";
-// import { useForm } from "@ant-design-vue/use";
 import {
   ref,
   defineComponent,
@@ -143,7 +143,6 @@ export default defineComponent({
         },
       ],
     };
-    // const { resetFields } = useForm(formData, rulesRef);
     //表格数据
     const data = ref<any>([]);
     //分页参数
@@ -155,7 +154,7 @@ export default defineComponent({
     const total = ref(10);
     //表格分页配置
     const pagination = computed(() => ({
-      total,
+      total: total.value,
       current: params.pageIndex,
       pageSize: params.pageSize,
       showSizeChanger: true,
@@ -182,7 +181,10 @@ export default defineComponent({
     };
     onMounted(() => featchList());
     //成功回调
-    const handleFinish = () => featchList();
+    const handleFinish = () => {
+      params.pageIndex = 1;
+      featchList();
+    };
     //失败回调
     const handleFinishFailed = (errors: any) => {
       console.log(errors);
@@ -190,6 +192,7 @@ export default defineComponent({
     //重置表单的值
     const resetForm = () => {
       formRef.value.resetFields();
+      params.pageIndex = 1;
       featchList();
     };
     //翻页
