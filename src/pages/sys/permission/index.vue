@@ -229,6 +229,7 @@ export default defineComponent({
   .child-node {
     .ant-tree-child-tree {
       display: flex;
+      flex-wrap: wrap;
     }
   }
 }

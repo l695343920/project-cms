@@ -1,7 +1,7 @@
 <!--
  * @Descripttion: 搜索功能表格封装
  * @Date: 2021-05-18 20:14:05
- * @LastEditTime: 2021-08-01 14:20:33
+ * @LastEditTime: 2021-08-01 19:53:05
 -->
 <template>
   <a-form
@@ -201,9 +201,11 @@ export default defineComponent({
       filters: Filters,
       sorter: any
     ) => {
-      params.pageIndex = pag.current;
-      params.pageSize = pag.pageSize;
-      featchList();
+      if (pag && pag.current && pag.pageSize) {
+        params.pageIndex = pag.current;
+        params.pageSize = pag.pageSize!;
+        featchList();
+      }
     };
     //时间范围改变
     const onChange = (value: Moment[], dateString: string[]) => {
