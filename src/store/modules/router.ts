@@ -41,6 +41,7 @@ export default {
         if (obj.id === obj.parentId) {
           result.push(routerMap[obj.id]);
         } else {
+          value.children= value.children || [];
           value.children.push(obj);
         }
         routerMap[obj.id] && router.addRoute("首页", routerMap[obj.id]);

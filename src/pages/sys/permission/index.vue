@@ -158,6 +158,7 @@ export default defineComponent({
           result.push(map.get(obj.id));
         } else {
           let value = map.get(1);
+          value.children= value.children || [];
           value.children.push(obj);
           map.set(1, value);
         }
